@@ -390,25 +390,25 @@ if screen == "Complaint Queue":
         .tolist()
     )
 
-    if complaint_ids:
+if complaint_ids:
 
-        selected_id = st.selectbox(
-            "Select Complaint ID",
-            complaint_ids
-        )
-
-        if st.button(
-    "Review Selected Complaint",
-    type="primary"
-):
-
-    st.session_state.selected_id = selected_id
-
-    st.session_state.current_screen = (
-        "Complaint Review"
+    selected_id = st.selectbox(
+        "Select Complaint ID",
+        complaint_ids
     )
 
-    st.rerun()
+    if st.button(
+        "Review Selected Complaint",
+        type="primary"
+    ):
+
+        st.session_state.selected_id = selected_id
+
+        st.session_state.current_screen = (
+            "Complaint Review"
+        )
+
+        st.rerun()
 
 else:
 
