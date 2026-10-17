@@ -26,11 +26,28 @@ st.caption(
 @st.cache_data
 def load_data():
 
-    # Handle either complaints.csv or complaints (1).csv
-    if Path("complaints.csv").exists():
-        complaint_file = "complaints.csv"
-    else:
-        complaint_file = "complaints (1).csv"
+    app_dir = Path(__file__).resolve().parent
+
+    complaint_file = app_dir / "complaints.csv"
+    decision_context_file = app_dir / "decision_context.csv"
+    predictions_file = app_dir / "predictions.csv"
+    departments_file = app_dir / "departments.csv"
+
+    required_files = [
+        complaint_file,
+        decision_context_file,
+        predictions_file,
+        departments_file,
+    ]
+
+    missing_files = [p.name for p in required_files if not p.exists()]
+
+    if missing_files:
+        st.error(
+            "Missing required file(s): "
+            + ", ".join(missing_files)
+        )
+        st.stop()
 
     complaints = pd.read_csv(
         complaint_file,
@@ -38,17 +55,17 @@ def load_data():
     )
 
     decision_context = pd.read_csv(
-        "decision_context.csv",
+        decision_context_file,
         dtype={"complaint_id": str}
     )
 
     predictions = pd.read_csv(
-        "predictions.csv",
+        predictions_file,
         dtype={"complaint_id": str}
     )
 
     departments = pd.read_csv(
-        "departments.csv",
+        departments_file,
         dtype={"department_id": str}
     )
 
