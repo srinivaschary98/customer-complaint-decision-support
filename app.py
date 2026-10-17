@@ -403,11 +403,7 @@ if complaint_ids:
     ):
 
         st.session_state.selected_id = selected_id
-
-        st.session_state.current_screen = (
-            "Complaint Review"
-        )
-
+        st.session_state.current_screen = "Complaint Review"
         st.rerun()
 
 else:
@@ -415,7 +411,6 @@ else:
     st.warning(
         "No complaints match the selected filters."
     )
-
 # =========================================================
 # SCREEN 2 — COMPLAINT REVIEW
 # =========================================================
