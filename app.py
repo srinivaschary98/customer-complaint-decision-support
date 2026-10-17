@@ -390,27 +390,27 @@ if screen == "Complaint Queue":
         .tolist()
     )
 
-if complaint_ids:
+    if complaint_ids:
 
-    selected_id = st.selectbox(
-        "Select Complaint ID",
-        complaint_ids
-    )
+        selected_id = st.selectbox(
+            "Select Complaint ID",
+            complaint_ids
+        )
 
-    if st.button(
-        "Review Selected Complaint",
-        type="primary"
-    ):
+        if st.button(
+            "Review Selected Complaint",
+            type="primary"
+        ):
 
-        st.session_state.selected_id = selected_id
-        st.session_state.current_screen = "Complaint Review"
-        st.rerun()
+            st.session_state.selected_id = selected_id
+            st.session_state.current_screen = "Complaint Review"
+            st.rerun()
 
-else:
+    else:
 
-    st.warning(
-        "No complaints match the selected filters."
-    )
+        st.warning(
+            "No complaints match the selected filters."
+        )
 # =========================================================
 # SCREEN 2 — COMPLAINT REVIEW
 # =========================================================
