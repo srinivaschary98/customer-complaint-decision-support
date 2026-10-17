@@ -398,22 +398,23 @@ if screen == "Complaint Queue":
         )
 
         if st.button(
-            "Review Selected Complaint",
-            type="primary"
-        ):
+    "Review Selected Complaint",
+    type="primary"
+):
 
-            st.session_state.current_screen = (
-    "Complaint Review"
-)
+    st.session_state.selected_id = selected_id
 
-            st.rerun()
+    st.session_state.current_screen = (
+        "Complaint Review"
+    )
 
-    else:
+    st.rerun()
 
-        st.warning(
-            "No complaints match the selected filters."
-        )
+else:
 
+    st.warning(
+        "No complaints match the selected filters."
+    )
 
 # =========================================================
 # SCREEN 2 — COMPLAINT REVIEW
