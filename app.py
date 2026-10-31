@@ -1614,6 +1614,76 @@ st.info(
                 changed.append(col)
         return changed
 
+# ---------------------------------------------------------
+# WEEK 11 — SCENARIO VALIDATION
+# ---------------------------------------------------------
+
+def validate_scenario(scenario_row, include_department=False):
+
+    row = scenario_row.iloc[0]
+    warnings = []
+
+    # Basic validity checks
+    if row["prior_complaint_count"] < 0:
+        warnings.append(
+            "Prior complaint count cannot be negative."
+        )
+
+    if (
+        pd.notna(row["known_financial_impact"])
+        and row["known_financial_impact"] < 0
+    ):
+        warnings.append(
+            "Known financial impact cannot be negative."
+        )
+
+    if row["current_workload"] < 0:
+        warnings.append(
+            "Current workload cannot be negative."
+        )
+
+    if row["available_capacity"] < 0:
+        warnings.append(
+            "Available capacity cannot be negative."
+        )
+
+    if not 0 <= row["escalation_probability"] <= 1:
+        warnings.append(
+            "Escalation signal must be between 0% and 100%."
+        )
+
+    # Check whether numeric values are unusually high
+    workload_limit = data["current_workload"].quantile(0.99)
+    capacity_limit = data["available_capacity"].quantile(0.99)
+
+    if row["current_workload"] > workload_limit:
+        warnings.append(
+            "Current workload is above the 99th percentile "
+            "of the project data. Interpret this scenario carefully."
+        )
+
+    if row["available_capacity"] > capacity_limit:
+        warnings.append(
+            "Available capacity is above the 99th percentile "
+            "of the project data. Interpret this scenario carefully."
+        )
+
+    # Routing department check
+    if include_department:
+
+        valid_departments = (
+            departments["department_id"]
+            .astype(str)
+            .tolist()
+        )
+
+        if str(row["recommended_department_id"]) not in valid_departments:
+            warnings.append(
+                "The selected department is not in the department list."
+            )
+
+    return warnings
+
     with kpi_tab1:
         st.subheader("KPI 1 — Escalation Risk What-If")
 
@@ -1630,6 +1700,13 @@ st.info(
         scenario_X = baseline_X.copy()
         for col, value in values.items():
             scenario_X.loc[scenario_X.index[0], col] = value
+            esc_warnings = validate_scenario(
+    scenario_X,
+    include_department=False
+)
+
+for warning in esc_warnings:
+    st.warning(warning)
 
         updated_prob = model.predict_proba(scenario_X)[0, 1]
         difference = updated_prob - baseline_prob
