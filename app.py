@@ -30,7 +30,7 @@ st.set_page_config(
 st.title("Customer Complaint Prioritization and Resolution Decision-Support Tool")
 
 st.caption(
-    "Week 10 Prototype — Two Predictive KPIs, Model Interpretation, and What-If Analysis"
+    "Week 11 — Model Evaluation, Decision Support, and What-If Analysis"
 )
 
 APP_DIR = Path(__file__).resolve().parent
@@ -1382,6 +1382,35 @@ elif screen == "What-If Analysis":
         "What-if results are model-based scenarios, not guaranteed causal effects. "
         "Changing an input may or may not materially change the prediction."
     )
+
+# ---------------------------------------------------------
+# WEEK 11 — WHAT-IF INPUT GUIDANCE
+# ---------------------------------------------------------
+
+st.info(
+    """
+    **How to use the what-if inputs**
+
+    **Operational inputs that may be changed in a realistic scenario:**
+    - Current workload
+    - Available capacity
+
+    **Existing complaint characteristics or external conditions:**
+    - Prior complaint count
+    - Known financial impact
+    - Issue
+    - Submission channel
+
+    **Model-generated or system-generated information:**
+    - Existing escalation signal
+    - Predicted urgency
+    - Recommended department
+
+    The last two groups can be changed in the tool to explore model behavior,
+    but they should not be interpreted as actions that a manager can directly
+    control in the real world.
+    """
+)
 
     available_ids = data[
         data["date_received"].dt.year == 2026
