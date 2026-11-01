@@ -225,7 +225,7 @@ A brief member-specific contribution summary is included separately in the final
 
 ---
 
-## Installation
+## Setup and Dependencies
 
 Install the required packages:
 
